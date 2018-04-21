@@ -1,14 +1,27 @@
 
 var Game = {};
+var pokemonIds =[];
+var pokemonPositions =[];
 
 Game.preload = function(){
     Game.scene = this;
     this.load.image('tileset', 'assets/gridtiles.png');
     this.load.tilemapTiledJSON('map', 'assets/finalMap.json');
     this.load.image('ash', 'assets/ash.png');
+
+    Game.generatePokemonIds();
+
+    //5 random pokemon
+    // this.load.image('pokemon1','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[0]+'.png');
+    // this.load.image('pokemon2','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[1]+'.png');
+    // this.load.image('pokemon3','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[2]+'.png');
+    // this.load.image('pokemon4','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[3]+'.png');
+    // this.load.image('pokemon5','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[4]+'.png');
 };
 
 Game.create = function(){
+
+    this.input.on('pointerup',Game.handleClick);
 
     Game.camera = this.cameras.main;
     // top-left,top-right, width-height
@@ -72,15 +85,84 @@ Game.create = function(){
         if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
     }
     Game.finder.setAcceptableTiles(acceptableTiles);
+    Game.generatePokemonPosition(acceptableTiles);
+
 };
 
 Game.update = function(){
+  var worldPoint = this.input.activePointer.positionToCamera(this.cameras.main);
 
+    // Rounds down to nearest tile
+    var pointerTileX = Game.map.worldToTileX(worldPoint.x);
+    var pointerTileY = Game.map.worldToTileY(worldPoint.y);
+    Game.marker.x = Game.map.tileToWorldX(pointerTileX);
+    Game.marker.y = Game.map.tileToWorldY(pointerTileY);
+    Game.marker.setVisible(!Game.checkCollision(pointerTileX,pointerTileY));
 };
+
+Game.checkCollision = function(x,y){
+    var tile = Game.map.getTileAt(x, y);
+    return tile.properties.collide == true;
+};
+
 
 // Helper function
 // Returns the id of the tile given x and y coordinates
 Game.getTileID = function(x,y){
     var tile = Game.map.getTileAt(x, y);
     return tile.index;
+};
+
+Game.generatePokemonIds = function(){
+    while(pokemonIds.length<5){
+      var id = Math.floor(Math.random() * 87);
+      if(!pokemonIds.includes(id))
+        pokemonIds.push(id);
+    }
+};
+
+Game.generatePokemonPosition = function(acceptableTiles){
+    while(pokemonPositions.length<5){
+      var tile = acceptableTiles[Math.floor(Math.random() * acceptableTiles.length)]
+      if(!pokemonPositions.includes(tile))
+        pokemonPositions.push(tile);
+    }
+};
+
+Game.handleClick = function(pointer){
+    var x = Game.camera.scrollX + pointer.x;
+    var y = Game.camera.scrollY + pointer.y;
+    var toX = Math.floor(x/32);
+    var toY = Math.floor(y/32);
+    var fromX = Math.floor(Game.player.x/32);
+    var fromY = Math.floor(Game.player.y/32);
+    console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+
+    Game.finder.findPath(fromX, fromY, toX, toY, function( path ) {
+        if (path === null) {
+            console.warn("Path was not found.");
+        } else {
+            console.log(path);
+            Game.moveCharacter(path);
+        }
+    });
+    Game.finder.calculate(); // don't forget, otherwise nothing happens
+};
+
+Game.moveCharacter = function(path){
+    // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
+    var tweens = [];
+    for(var i = 0; i < path.length-1; i++){
+        var ex = path[i+1].x;
+        var ey = path[i+1].y;
+        tweens.push({
+            targets: Game.player,
+            x: {value: ex*Game.map.tileWidth, duration: 200},
+            y: {value: ey*Game.map.tileHeight, duration: 200}
+        });
+    }
+
+    Game.scene.tweens.timeline({
+        tweens: tweens
+    });
 };
