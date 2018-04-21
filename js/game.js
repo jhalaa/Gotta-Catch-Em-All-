@@ -12,7 +12,7 @@ Game.preload = function(){
     Game.generatePokemonIds();
 
     //5 random pokemon
-    // this.load.image('pokemon1','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[0]+'.png');
+    this.load.image('pokemon1','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[0]+'.png');
     // this.load.image('pokemon2','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[1]+'.png');
     // this.load.image('pokemon3','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[2]+'.png');
     // this.load.image('pokemon4','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[3]+'.png');
@@ -29,8 +29,18 @@ Game.create = function(){
 
     // adds an image to the scene and postions it at 32*32,ie,the first block
     var ash = this.add.image(32,32,'ash');
+    // var pokemon2 = this.add.image(32,32,'pokemon2');
+    // var pokemon3 = this.add.image(32,32,'pokemon3');
+    // var pokemon4 = this.add.image(32,32,'pokemon4');
+    // var pokemon5 = this.add.image(32,32,'pokemon5');
+
     //make the image come on top of the scene-> similar to z index
     ash.setDepth(1);
+    // pokemon2.setDepth(1);
+    // pokemon3.setDepth(1);
+    // pokemon4.setDepth(1);
+    // pokemon5.setDepth(1);
+
 
     // setting the origin of the sprite
     ash.setOrigin(0,0.5);
@@ -86,7 +96,9 @@ Game.create = function(){
     }
     Game.finder.setAcceptableTiles(acceptableTiles);
     Game.generatePokemonPosition(acceptableTiles);
-
+    var pokemon1 = this.add.image(tileset.texCoordinates[pokemonPositions[0]].x -32,tileset.texCoordinates[pokemonPositions[0]].y-32,'pokemon1');
+    pokemon1.setDepth(1);
+    pokemon1.setOrigin(0,0);
 };
 
 Game.update = function(){
