@@ -13,10 +13,10 @@ Game.preload = function(){
 
     //5 random pokemon
     this.load.image('pokemon1','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[0]+'.png');
-    // this.load.image('pokemon2','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[1]+'.png');
-    // this.load.image('pokemon3','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[2]+'.png');
-    // this.load.image('pokemon4','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[3]+'.png');
-    // this.load.image('pokemon5','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[4]+'.png');
+    this.load.image('pokemon2','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[1]+'.png');
+    this.load.image('pokemon3','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[2]+'.png');
+    this.load.image('pokemon4','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[3]+'.png');
+    this.load.image('pokemon5','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'+pokemonIds[4]+'.png');
 };
 
 Game.create = function(){
@@ -96,9 +96,26 @@ Game.create = function(){
     }
     Game.finder.setAcceptableTiles(acceptableTiles);
     Game.generatePokemonPosition(acceptableTiles);
-    var pokemon1 = this.add.image(tileset.texCoordinates[pokemonPositions[0]].x -32,tileset.texCoordinates[pokemonPositions[0]].y-32,'pokemon1');
+    pokemon1 = this.add.image(tileset.texCoordinates[pokemonPositions[0]].x -32,tileset.texCoordinates[pokemonPositions[0]].y-32,'pokemon1');
     pokemon1.setDepth(1);
     pokemon1.setOrigin(0,0);
+
+    pokemon2 = this.add.image(tileset.texCoordinates[pokemonPositions[1]].x -32,tileset.texCoordinates[pokemonPositions[1]].y-32,'pokemon2');
+    pokemon2.setDepth(1);
+    pokemon2.setOrigin(0,0);
+
+    pokemon3 = this.add.image(tileset.texCoordinates[pokemonPositions[2]].x -32,tileset.texCoordinates[pokemonPositions[2]].y-32,'pokemon3');
+    pokemon3.setDepth(1);
+    pokemon3.setOrigin(0,0);
+
+    pokemon4 = this.add.image(tileset.texCoordinates[pokemonPositions[3]].x -32,tileset.texCoordinates[pokemonPositions[3]].y-32,'pokemon4');
+    pokemon4.setDepth(1);
+    pokemon4.setOrigin(0,0);
+
+    pokemon5 = this.add.image(tileset.texCoordinates[pokemonPositions[4]].x -32,tileset.texCoordinates[pokemonPositions[4]].y-32,'pokemon5');
+    pokemon5.setDepth(1);
+    pokemon5.setOrigin(0,0);
+
 };
 
 Game.update = function(){
@@ -159,9 +176,12 @@ Game.handleClick = function(pointer){
         }
     });
     Game.finder.calculate(); // don't forget, otherwise nothing happens
+
 };
 
 Game.moveCharacter = function(path){
+    var tileset = Game.map.tilesets[0];
+
     // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
     var tweens = [];
     for(var i = 0; i < path.length-1; i++){
@@ -172,6 +192,16 @@ Game.moveCharacter = function(path){
             x: {value: ex*Game.map.tileWidth, duration: 200},
             y: {value: ey*Game.map.tileHeight, duration: 200}
         });
+        if(ex == tileset.texCoordinates[pokemonPositions[0]].x/32 && ey == tileset.texCoordinates[pokemonPositions[0]].y/32)
+          pokemon1.destroy();
+        else if(ex == tileset.texCoordinates[pokemonPositions[1]].x/32 && ey == tileset.texCoordinates[pokemonPositions[1]].y/32)
+            pokemon2.destroy();
+        else if(ex == tileset.texCoordinates[pokemonPositions[2]].x/32 && ey == tileset.texCoordinates[pokemonPositions[2]].y/32)
+            pokemon3.destroy();
+        else if(ex == tileset.texCoordinates[pokemonPositions[3]].x/32 && ey == tileset.texCoordinates[pokemonPositions[3]].y/32)
+            pokemon4.destroy();
+        else if(ex == tileset.texCoordinates[pokemonPositions[4]].x/32 && ey == tileset.texCoordinates[pokemonPositions[4]].y/32)
+            pokemon5.destroy();
     }
 
     Game.scene.tweens.timeline({
