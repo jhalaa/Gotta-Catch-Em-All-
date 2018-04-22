@@ -31,10 +31,22 @@
     "tileheight":32,
     "tileproperties":
        {
-        "103":
+        "102":
            {
             "collide":true
            },
+       "115":
+          {
+           "collide":true
+          },
+      "131":
+         {
+          "collide":true
+         },
+       "5":
+          {
+           "collide":true
+          },
         "19":
            {
             "collide":true
@@ -70,10 +82,22 @@
        },
     "tilepropertytypes":
        {
-        "103":
+        "102":
            {
             "collide":"bool"
            },
+       "131":
+          {
+           "collide":"bool"
+          },
+         "115":
+            {
+             "collide":"bool"
+            },
+         "5":
+            {
+             "collide":"bool"
+            },
         "19":
            {
             "collide":"bool"
