@@ -2,6 +2,7 @@
 var Game = {};
 var pokemonIds =[];
 var pokemonPositions =[];
+var ex,ey;
 
 Game.preload = function(){
     Game.scene = this;
@@ -95,24 +96,24 @@ Game.create = function(){
         if(properties[i].cost) Game.finder.setTileCost(i+1, properties[i].cost); // If there is a cost attached to the tile, let's register it
     }
     Game.finder.setAcceptableTiles(acceptableTiles);
-    Game.generatePokemonPosition(acceptableTiles);
-    pokemon1 = this.add.image(tileset.texCoordinates[pokemonPositions[0]].x -32,tileset.texCoordinates[pokemonPositions[0]].y-32,'pokemon1');
+    Game.generatePokemonPosition(grid);
+    pokemon1 = this.add.image(pokemonPositions[0].x *32,pokemonPositions[0].y*32,'pokemon1');
     pokemon1.setDepth(1);
     pokemon1.setOrigin(0,0);
 
-    pokemon2 = this.add.image(tileset.texCoordinates[pokemonPositions[1]].x -32,tileset.texCoordinates[pokemonPositions[1]].y-32,'pokemon2');
+    pokemon2 = this.add.image(pokemonPositions[1].x *32,pokemonPositions[1].y*32,'pokemon2');
     pokemon2.setDepth(1);
     pokemon2.setOrigin(0,0);
 
-    pokemon3 = this.add.image(tileset.texCoordinates[pokemonPositions[2]].x -32,tileset.texCoordinates[pokemonPositions[2]].y-32,'pokemon3');
+    pokemon3 = this.add.image(pokemonPositions[2].x *32,pokemonPositions[2].y *32,'pokemon3');
     pokemon3.setDepth(1);
     pokemon3.setOrigin(0,0);
 
-    pokemon4 = this.add.image(tileset.texCoordinates[pokemonPositions[3]].x -32,tileset.texCoordinates[pokemonPositions[3]].y-32,'pokemon4');
+    pokemon4 = this.add.image(pokemonPositions[3].x *32,pokemonPositions[3].y*32,'pokemon4');
     pokemon4.setDepth(1);
     pokemon4.setOrigin(0,0);
 
-    pokemon5 = this.add.image(tileset.texCoordinates[pokemonPositions[4]].x -32,tileset.texCoordinates[pokemonPositions[4]].y-32,'pokemon5');
+    pokemon5 = this.add.image(pokemonPositions[4].x *32,pokemonPositions[4].y*32,'pokemon5');
     pokemon5.setDepth(1);
     pokemon5.setOrigin(0,0);
 
@@ -150,11 +151,15 @@ Game.generatePokemonIds = function(){
     }
 };
 
-Game.generatePokemonPosition = function(acceptableTiles){
+Game.generatePokemonPosition = function(grid){
     while(pokemonPositions.length<5){
-      var tile = acceptableTiles[Math.floor(Math.random() * acceptableTiles.length)]
-      if(!pokemonPositions.includes(tile))
+      var x = Math.floor(Math.random() * (grid[0].length-4));
+      var y = Math.floor(Math.random() * (grid.length-4));
+      var tile = Game.map.getTileAt(x, y);
+      if(tile!=null && !pokemonPositions.includes(tile))
         pokemonPositions.push(tile);
+      else
+          continue;
     }
 };
 
@@ -173,38 +178,43 @@ Game.handleClick = function(pointer){
         } else {
             console.log(path);
             Game.moveCharacter(path);
+
         }
+
     });
-    Game.finder.calculate(); // don't forget, otherwise nothing happens
 
+    Game.finder.calculate()// don't forget, otherwise nothing happens,
+    setTimeout(destroy,2500);
 };
-
+destroy = function(){
+  if(ex-1 == pokemonPositions[0].x && ey-1 == pokemonPositions[0].y)
+    pokemon1.destroy();
+  else if(ex-1 == pokemonPositions[1].x && ey-1 == pokemonPositions[1].y)
+      pokemon2.destroy();
+  else if(ex-1 == pokemonPositions[2].x && ey-1 == pokemonPositions[2].y)
+      pokemon3.destroy();
+  else if(ex-1 == pokemonPositions[3].x && ey-1 == pokemonPositions[3].y)
+      pokemon4.destroy();
+  else if(ex-1 == pokemonPositions[4].x && ey-1 == pokemonPositions[4].y)
+      pokemon5.destroy();
+}
 Game.moveCharacter = function(path){
     var tileset = Game.map.tilesets[0];
 
     // Sets up a list of tweens, one for each tile to walk, that will be chained by the timeline
     var tweens = [];
     for(var i = 0; i < path.length-1; i++){
-        var ex = path[i+1].x;
-        var ey = path[i+1].y;
+        ex = path[i+1].x;
+        ey = path[i+1].y;
         tweens.push({
             targets: Game.player,
             x: {value: ex*Game.map.tileWidth, duration: 200},
             y: {value: ey*Game.map.tileHeight, duration: 200}
         });
-        if(ex == tileset.texCoordinates[pokemonPositions[0]].x/32 && ey == tileset.texCoordinates[pokemonPositions[0]].y/32)
-          pokemon1.destroy();
-        else if(ex == tileset.texCoordinates[pokemonPositions[1]].x/32 && ey == tileset.texCoordinates[pokemonPositions[1]].y/32)
-            pokemon2.destroy();
-        else if(ex == tileset.texCoordinates[pokemonPositions[2]].x/32 && ey == tileset.texCoordinates[pokemonPositions[2]].y/32)
-            pokemon3.destroy();
-        else if(ex == tileset.texCoordinates[pokemonPositions[3]].x/32 && ey == tileset.texCoordinates[pokemonPositions[3]].y/32)
-            pokemon4.destroy();
-        else if(ex == tileset.texCoordinates[pokemonPositions[4]].x/32 && ey == tileset.texCoordinates[pokemonPositions[4]].y/32)
-            pokemon5.destroy();
-    }
 
+    }
     Game.scene.tweens.timeline({
         tweens: tweens
     });
+
 };
