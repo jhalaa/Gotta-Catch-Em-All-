@@ -222,8 +222,8 @@ Game.moveCharacter = function(path){
 };
 
 
-  // exports.Game = Game;
-  // exports.pokemonIds = pokemonIds;
-  // exports.pokemonPositions = pokemonIds;
-  // exports.ex = ex;
-  // exports.ey = ey;
+  exports.Game = Game;
+  exports.pokemonIds = pokemonIds;
+  exports.pokemonPositions = pokemonIds;
+  exports.ex = ex;
+  exports.ey = ey;
