@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jhalaa/Gotta-Catch-Em-All-.svg?branch=master)](https://travis-ci.org/jhalaa/Gotta-Catch-Em-All-)
+
 # Gotta-Catch-Em-All!
 
 ## Description
