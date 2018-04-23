@@ -152,6 +152,7 @@ Game.generatePokemonIds = function(){
 };
 
 Game.generatePokemonPosition = function(grid){
+  console.log("start")
     while(pokemonPositions.length<5){
       var x = Math.floor(Math.random() * (grid[0].length-4));
       var y = Math.floor(Math.random() * (grid.length-4));
@@ -161,6 +162,7 @@ Game.generatePokemonPosition = function(grid){
       else
           continue;
     }
+    console.log("Dcsx")
 };
 
 Game.handleClick = function(pointer){
@@ -184,7 +186,7 @@ Game.handleClick = function(pointer){
     });
 
     Game.finder.calculate()// don't forget, otherwise nothing happens,
-    setTimeout(destroy,2500);
+    setTimeout(destroy,3000);
 };
 destroy = function(){
   if(ex-1 == pokemonPositions[0].x && ey-1 == pokemonPositions[0].y)
@@ -218,3 +220,10 @@ Game.moveCharacter = function(path){
     });
 
 };
+
+
+  // exports.Game = Game;
+  // exports.pokemonIds = pokemonIds;
+  // exports.pokemonPositions = pokemonIds;
+  // exports.ex = ex;
+  // exports.ey = ey;
