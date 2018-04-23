@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/jhalaa/Gotta-Catch-Em-All-.svg?branch=master)](https://travis-ci.org/jhalaa/Gotta-Catch-Em-All-)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b213247c16bc35f47205/maintainability)](https://codeclimate.com/github/jhalaa/Gotta-Catch-Em-All-/maintainability)
+
 
 # Gotta-Catch-Em-All!
 
